@@ -1,12 +1,12 @@
 <template>
   <div class="hello">
-   
+   ccc
   </div>
 </template>
 
 <script>
 export default {
-    name: 'HelloWorld',
+    name: 'Welcome',
     components: {},
     data() {
         return {

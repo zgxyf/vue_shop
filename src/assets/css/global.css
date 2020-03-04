@@ -1,0 +1,41 @@
+/* 全局样式 */
+html,body,#app{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.el-breadcrumb {
+    margin-bottom: 15px;
+}
+.el-card {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15) !important;
+}
+
+.el-table{
+    margin-top: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 修改elementUI 表格样式 wws_table是el-table上的*/
+/*  
+.tableDiv {
+    .wws_table div::-webkit-scrollbar{width: 8px;height: 8px;background: #eee;}
+    .wws_table div::-webkit-scrollbar-thumb{width: 8px;height: 8px;background: #3394ed;}
+
+    .wws_table .el-table__fixed{height:100%}
+    .wws_table_header th{font-weight: normal;color: #333;background: #ACD6F2;}
+    .el-table tr:nth-child(odd) > tg{background: #e5f6ff;}
+    .wws_table thead tr th{background: #ACD6F2;color: #666666;}
+}
+*/
