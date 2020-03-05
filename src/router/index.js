@@ -12,24 +12,34 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: Login
   },
   {
     path: '/home',
-    name: 'home',
+    name: 'Home',
     redirect: '/welcome',
     component: () => import( '@/components/Home.vue'),
     children: [
       {
         path: '/welcome',
-        name: 'welcome',
+        name: 'Welcome',
         component: () => import('@/components/Welcome.vue'),
       },
       {
         path: '/users',
-        name: 'users',
+        name: 'Users',
         component: () => import('@/components/user/Users.vue'),
+      },
+      {
+        path: '/rights',
+        name: 'Rights',
+        component: () => import('@/components/power/Rights.vue'),
+      },
+      {
+        path: '/roles',
+        name: 'Roles',
+        component: () => import('@/components/power/Roles.vue'),
       },
     ]
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="users">
     <!-- 面包屑导航区 -->
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
@@ -59,7 +59,7 @@
               placement="top"
               :enterable="false"
             >
-              <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>
+              <el-button type="warning" size="mini" icon="el-icon-setting" @click="setRole(scope.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -117,6 +117,25 @@
         <el-button type="primary" @click="editUser">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 分配角色的对话框 -->
+    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%" @close="setRoleDialogClose">
+    <div>
+      <p>当前的用户：{{userInfo.username}}</p>
+      <p>当前的角色：{{userInfo.role_name}}</p>
+      <p>分配新角色：
+        <el-select v-model="selectRoleId" placeholder="请选择">
+          <el-option
+            v-for="item in rolesList" :key="item.id" :label="item.roleName" :value="item.id">
+          </el-option>
+        </el-select>
+      </p>
+    </div>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="saveRoleInfo">确 定</el-button>
+    </span>
+</el-dialog>
   </div>
 </template>
 
@@ -149,6 +168,10 @@ export default {
       userList: [],
       addDialogVisible: false,
       editDialogVisible: false,
+      setRoleDialogVisible: false,
+      selectRoleId: '',
+      userInfo: {},
+      rolesList: [],
       pagination: {
         currentPage: 1,
         total: 0,
@@ -340,6 +363,53 @@ export default {
             message: "已取消删除"
           });
         });
+    },
+    setRole(userInfo) {
+      // 展示分配角色对话框
+      let self = this;
+      self.userInfo = userInfo;
+      // 展示对话框之前获取所有的角色列表
+      api.getRoles().then(res => {
+        if (res.data && res.data.meta) {
+          if (res.data.meta.status == 200) {
+            self.rolesList = res.data.data
+            self.setRoleDialogVisible = true;
+          } else {
+            self.$message({ message: res.data.meta.msg, type: "warning" });
+          }
+        } else {
+          self.$message({ message: "系统错误", type: "error" });
+        }
+      });
+      
+    },
+    saveRoleInfo() {
+      // 保存用户就是
+      let self = this;
+      if(!self.selectRoleId){
+        self.$message({ message: "请选择要分配的角色", type: "error" });
+      }
+      let params = {"rid": self.selectRoleId}
+      api.saveRoleInfo(self.userInfo.id, params).then(res => {
+        if (res.data && res.data.meta) {
+          if (res.data.meta.status == 200) {
+            self.$message({ message: res.data.meta.msg, type: "success" });
+            self.setRoleDialogVisible = false;
+            // self.selectRoleId = '';
+            // self.userInfo = {};
+            self.getUserList();
+          } else {
+            self.$message({ message: res.data.meta.msg, type: "warning" });
+          }
+        } else {
+          self.$message({ message: "系统错误", type: "error" });
+        }
+      });
+    },
+    setRoleDialogClose(){
+      let self = this;
+      self.selectRoleId = '';
+      self.userInfo = {};
     }
   }
 };

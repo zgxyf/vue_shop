@@ -53,4 +53,17 @@ export default {
             url: "/users/" + id 
         })
     },
+    getRoles(){
+        return axios({
+            method: "get",
+            url: "/roles"
+        })
+    },
+    saveRoleInfo(id, params){
+        return axios({
+            method: "put",
+            url: `users/${id}/role`,
+            data: params
+        })
+    },
 }
